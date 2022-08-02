@@ -490,7 +490,7 @@ spec:
         name: nginx
         env:
         - name: SECURE_SUBNET
-          value: 8.8.8.8/32 # change-me
+          value: 58.161.33.9/32 # change-me
         - name: KUBE_SVC_NAME
           value: wordpress-svc
         volumeMounts:
