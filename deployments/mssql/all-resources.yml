@@ -33,6 +33,7 @@ spec:
       containers:
       - image: mcr.microsoft.com/mssql/server:2019-latest
         name: mssql
+        user: root
         ports:
         - containerPort: 1433
         env:
