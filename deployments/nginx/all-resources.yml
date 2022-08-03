@@ -144,6 +144,7 @@ data:
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 
         allow ${SECURE_SUBNET};
+        allow ${SECURE_SUBNET2};
         allow 127.0.0.1; 
         deny all;
       }
@@ -177,6 +178,7 @@ data:
         fastcgi_param SCRIPT_NAME $fastcgi_script_name;
 
         allow ${SECURE_SUBNET};
+        allow ${SECURE_SUBNET2};
         allow 127.0.0.1; 
         deny all;
       }
@@ -491,6 +493,8 @@ spec:
         env:
         - name: SECURE_SUBNET
           value: 58.161.33.9/32 # change-me
+        - name: SECURE_SUBNET2
+          value: 103.9.62.219/32 # change-me
         - name: KUBE_SVC_NAME
           value: wordpress-svc
         volumeMounts:
