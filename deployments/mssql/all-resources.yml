@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mssql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mssql
+  name: mssql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql
+      tier: backend
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: mssql
+        tier: backend
+    spec:
+      containers:
+      - image: mcr.microsoft.com/mssql/server:2019-latest
+        name: mssql
+        ports:
+        - containerPort: 1433
+        env:
+        - name: MSSQL_PID
+          value: "Developer"
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: W0rd_Pr3sSUs3r.
+        volumeMounts:
+        - name: mssqldb
+          mountPath: /var/opt/mssql
+      volumes:
+      - name: mssqldb
+        persistentVolumeClaim:
+          claimName: mssql-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mssql
+    tier: backend
+  name: mssql-svc
+spec:
+  ports:
+  - port: 1433
+    protocol: TCP
+    targetPort: 1433
+  selector:
+    app: mssql
+    tier: backend
+  type: ClusterIP
