@@ -30,10 +30,13 @@ spec:
         app: mssql
         tier: backend
     spec:
+      terminationGracePeriodSeconds: 30
+      hostname: mssqlinst
+      securityContext:
+        fsGroup: 10001
       containers:
       - image: mcr.microsoft.com/mssql/server:2019-latest
         name: mssql
-        user: root
         ports:
         - containerPort: 1433
         env:
