@@ -48,7 +48,7 @@ spec:
       volumes:
       - name: mssqldb
         persistentVolumeClaim:
-          claimName: mssql-data
+          claimName: mssql-pvc
 ---
 apiVersion: v1
 kind: Service
