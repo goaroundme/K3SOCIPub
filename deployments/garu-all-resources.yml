@@ -601,7 +601,6 @@ spec:
   tls:
   - hosts:
     - erpome.ga
-    - argocd.erpome.ga
     secretName: erpomega-tls
   rules:
     - host: erpome.ga
@@ -612,16 +611,6 @@ spec:
             backend:
               service:
                 name: nginx-svc
-                port:
-                  number: 80
-    - host: argocd.erpome.ga
-      http:
-        paths:
-          - pathType: Prefix
-            path: "/"
-            backend:
-              service: 
-                name: argocd-server
                 port:
                   number: 80
 ---
