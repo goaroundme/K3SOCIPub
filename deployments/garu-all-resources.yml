@@ -196,7 +196,7 @@ data:
     server {
       listen       80 default_server;
       listen  [::]:80 default_server;
-      server_name _;
+      server_name erpome.ga;
       root /var/www/html;
       index index.html index.php;
       
@@ -593,15 +593,34 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-wp-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
 spec:
   ingressClassName: nginx
+  tls:
+  - hosts:
+    - erpome.ga
+    - argocd.erpome.ga
+    secretName: erpomega-tls
   rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: nginx-svc
-            port:
-              number: 80
+    - host: erpome.ga
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: nginx-svc
+                port:
+                  number: 80
+    - host: argocd.erpome.ga
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service: 
+                name: argocd-server
+                port:
+                  number: 80
+---
